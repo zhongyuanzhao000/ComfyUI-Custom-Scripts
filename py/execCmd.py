@@ -35,23 +35,12 @@ class ShowText:
                                         check=True)
                 # 获取标准输出和标准错误
                 text = result.stdout
-                error = result.stderr
             except subprocess.CalledProcessError as e:
                 # 如果脚本执行出错，捕获异常并记录错误信息
-                text = e.stdout
-                error = e.stderr
-            print("Output:", text)
-            print("Error:", error)
+                text = e.stderr
 
-            workflow = extra_pnginfo[0]["workflow"]
-            node = next(
-                (x for x in workflow["nodes"] if str(x["id"]) == str(unique_id[0])),
-                None,
-            )
             if isinstance(text, list):
                 text = ''.join(text)  # 将列表转换为字符串
-            if node:
-                node["widgets_values"] = [text]
 
         return {"ui": {"text": [text]}, "result": (text,)}
 
